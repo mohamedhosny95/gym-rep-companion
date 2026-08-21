@@ -6,7 +6,7 @@
 <title>Gym Rep & Recomp Companion</title>
 <meta name="description" content="Accessible, mobile-first gym workout companion and recomp nutrition planner.">
 
-<!-- PWA & Mobile Web App Meta -->
+<!-- 100% Self-Contained PWA Meta -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c0c0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -39,13 +39,63 @@
     --accent-amber-bg: #78350f;
     --accent-rose: #f43f5e;
 
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-size-base: 14px;
+    --font-size-title: 16px;
+    --font-size-target: 14px;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 14px;
     --radius-full: 9999px;
     
-    --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.6);
+    --focus-ring: 0 0 0 3px #3b82f6;
+  }
+
+  /* ── ACCESSIBILITY: TEXT SCALING MODES ── */
+  html.text-size-lg {
+    --font-size-base: 16px;
+    --font-size-title: 18px;
+    --font-size-target: 16px;
+  }
+  html.text-size-xl {
+    --font-size-base: 18px;
+    --font-size-title: 20px;
+    --font-size-target: 18px;
+  }
+  html.text-size-jumbo {
+    --font-size-base: 20px;
+    --font-size-title: 22px;
+    --font-size-target: 22px;
+  }
+
+  /* ── ACCESSIBILITY: ULTRA HIGH CONTRAST (WCAG AAA) ── */
+  html.theme-high-contrast {
+    --bg-base: #000000;
+    --bg-surface: #0a0a0c;
+    --bg-surface-raised: #121216;
+    --bg-surface-hover: #22222a;
+    --border-subtle: #444452;
+    --border-strong: #ffffff;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #e4e4e7;
+    --text-muted: #d4d4d8;
+    --text-inverse: #000000;
+    
+    --accent-green: #00ff66;
+    --accent-green-bg: #003311;
+    --accent-blue: #00ffff;
+    --accent-blue-bg: #002244;
+    --accent-amber: #ffff00;
+    --accent-amber-bg: #443300;
+    --focus-ring: 0 0 0 4px #ffff00;
+  }
+
+  /* ── ACCESSIBILITY: REDUCE MOTION ── */
+  html.reduce-motion * {
+    animation: none !important;
+    transition: none !important;
   }
 
   *, *::before, *::after {
@@ -59,7 +109,7 @@
     background-color: var(--bg-base);
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: var(--font-size-base);
     line-height: 1.5;
     padding-bottom: 96px;
     min-height: 100vh;
@@ -88,11 +138,11 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(12, 12, 14, 0.94);
+    background: rgba(12, 12, 14, 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-subtle);
-    padding: 10px 16px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -104,7 +154,7 @@
   }
 
   .brand-title {
-    font-size: 16px;
+    font-size: var(--font-size-title);
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #fff;
@@ -114,7 +164,7 @@
   }
 
   .brand-subtitle {
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 2px);
     color: var(--text-secondary);
     font-weight: 500;
   }
@@ -129,7 +179,7 @@
     background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 2px);
     font-weight: 600;
     padding: 6px 10px;
     border-radius: var(--radius-sm);
@@ -137,17 +187,17 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    min-height: 38px;
+    min-height: 40px;
     transition: background 0.15s, color 0.15s;
   }
   .action-btn:hover {
     background: var(--bg-surface-hover);
     color: var(--text-primary);
   }
-  .action-btn.active-wakelock {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: rgba(16, 185, 129, 0.4);
-    color: #34d399;
+  .action-btn.active-state {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
   }
 
   /* ── SUB-NAV / SEGMENTED CONTROLS ── */
@@ -157,7 +207,7 @@
     border: 1px solid var(--border-subtle);
     padding: 4px;
     border-radius: var(--radius-md);
-    margin: 12px 16px 8px;
+    margin: 12px 14px 8px;
     gap: 4px;
   }
 
@@ -166,12 +216,12 @@
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 2px);
     font-weight: 600;
     padding: 8px 4px;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    min-height: 44px;
+    min-height: 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -180,20 +230,20 @@
     transition: all 0.15s ease;
   }
   .seg-btn .subtext {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 400;
-    opacity: 0.8;
+    opacity: 0.85;
   }
   .seg-btn[aria-selected="true"] {
     background: var(--bg-surface-raised);
     color: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     border: 1px solid var(--border-strong);
   }
-  .seg-btn.accent-green[aria-selected="true"] { color: #34d399; border-color: var(--accent-green-bg); }
-  .seg-btn.accent-blue[aria-selected="true"] { color: #60a5fa; border-color: var(--accent-blue-bg); }
-  .seg-btn.accent-amber[aria-selected="true"] { color: #fbbf24; border-color: var(--accent-amber-bg); }
-  .seg-btn.accent-purple[aria-selected="true"] { color: #c084fc; border-color: var(--accent-purple-bg); }
+  .seg-btn.accent-green[aria-selected="true"] { color: var(--accent-green); border-color: var(--accent-green-bg); }
+  .seg-btn.accent-blue[aria-selected="true"] { color: var(--accent-blue); border-color: var(--accent-blue-bg); }
+  .seg-btn.accent-amber[aria-selected="true"] { color: var(--accent-amber); border-color: var(--accent-amber-bg); }
+  .seg-btn.accent-purple[aria-selected="true"] { color: var(--accent-purple); border-color: var(--accent-purple-bg); }
 
   /* ── TAB PANELS ── */
   .tab-panel {
@@ -212,22 +262,22 @@
 
   /* ── BANNERS ── */
   .info-banner {
-    margin: 8px 16px 12px;
-    padding: 10px 14px;
+    margin: 8px 14px 12px;
+    padding: 12px 14px;
     border-radius: var(--radius-md);
-    font-size: 13px;
+    font-size: var(--font-size-base);
     line-height: 1.45;
     display: flex;
     align-items: flex-start;
     gap: 10px;
   }
-  .info-banner.blue { background: rgba(30, 58, 138, 0.35); border: 1px solid rgba(59, 130, 246, 0.4); color: #bfdbfe; }
-  .info-banner.green { background: rgba(6, 78, 59, 0.35); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; }
-  .info-banner.amber { background: rgba(120, 53, 15, 0.35); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a; }
-  .info-banner.purple { background: rgba(88, 28, 135, 0.35); border: 1px solid rgba(168, 85, 247, 0.4); color: #e9d5ff; }
+  .info-banner.blue { background: rgba(30, 58, 138, 0.35); border: 1px solid rgba(59, 130, 246, 0.5); color: #bfdbfe; }
+  .info-banner.green { background: rgba(6, 78, 59, 0.35); border: 1px solid rgba(16, 185, 129, 0.5); color: #a7f3d0; }
+  .info-banner.amber { background: rgba(120, 53, 15, 0.35); border: 1px solid rgba(245, 158, 11, 0.5); color: #fde68a; }
+  .info-banner.purple { background: rgba(88, 28, 135, 0.35); border: 1px solid rgba(168, 85, 247, 0.5); color: #e9d5ff; }
 
   .section-heading {
-    padding: 12px 16px 6px;
+    padding: 12px 14px 6px;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -240,7 +290,7 @@
 
   /* ── EXERCISE ACCORDION CARD ── */
   .cards-list {
-    padding: 0 16px;
+    padding: 0 14px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -259,7 +309,7 @@
 
   .ex-header-btn {
     width: 100%;
-    min-height: 60px;
+    min-height: 64px;
     padding: 12px 14px;
     background: transparent;
     border: none;
@@ -274,7 +324,7 @@
   }
 
   .ex-number {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text-muted);
     text-align: center;
@@ -294,7 +344,7 @@
   }
 
   .ex-title {
-    font-size: 14px;
+    font-size: var(--font-size-title);
     font-weight: 600;
     color: #fff;
   }
@@ -302,20 +352,20 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    padding: 2px 7px;
+    padding: 2px 8px;
     border-radius: var(--radius-full);
     font-size: 11px;
     font-weight: 600;
     line-height: 1.2;
   }
-  .badge-compound { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
-  .badge-iso { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
-  .badge-core { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
-  .badge-mobility { background: rgba(20, 184, 166, 0.2); color: #5eead4; border: 1px solid rgba(20, 184, 166, 0.3); }
-  .badge-dynamic { background: rgba(249, 115, 22, 0.2); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.3); }
+  .badge-compound { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
+  .badge-iso { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
+  .badge-core { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+  .badge-mobility { background: rgba(20, 184, 166, 0.2); color: #5eead4; border: 1px solid rgba(20, 184, 166, 0.4); }
+  .badge-dynamic { background: rgba(249, 115, 22, 0.2); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.4); }
 
   .ex-muscle-text {
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 2px);
     color: var(--text-secondary);
   }
 
@@ -324,38 +374,36 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 3px;
+    gap: 4px;
   }
 
   /* ── EDITABLE WEIGHT BADGE ── */
   .target-weight-btn {
-    font-size: 13px;
+    font-size: var(--font-size-target);
     font-weight: 700;
-    color: #34d399;
-    background: rgba(6, 78, 59, 0.45);
-    padding: 3px 8px;
+    color: var(--accent-green);
+    background: rgba(6, 78, 59, 0.5);
+    padding: 4px 10px;
     border-radius: var(--radius-sm);
     border: 1px solid rgba(16, 185, 129, 0.4);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    min-height: 36px;
     transition: background 0.15s, transform 0.1s;
   }
   .target-weight-btn:hover {
-    background: rgba(6, 78, 59, 0.7);
-    transform: scale(1.02);
-  }
-  .target-weight-btn:active {
-    transform: scale(0.98);
+    background: rgba(6, 78, 59, 0.8);
+    transform: scale(1.03);
   }
   .edit-pen-icon {
-    font-size: 10px;
-    opacity: 0.7;
+    font-size: 11px;
+    opacity: 0.8;
   }
 
   .target-sets-val {
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 2px);
     font-weight: 600;
     color: var(--text-secondary);
   }
@@ -366,7 +414,7 @@
     transition: transform 0.2s ease;
     display: inline-block;
   }
-  .ex-header-btn[aria-expanded="true"] .chevron {
+  .ex-card.open .chevron {
     transform: rotate(180deg);
   }
 
@@ -382,25 +430,25 @@
   }
 
   .set-tracker-label {
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 2px);
     font-weight: 600;
     color: var(--text-secondary);
   }
 
   .set-chips {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
   .set-btn {
-    min-width: 44px;
-    min-height: 40px;
-    padding: 4px 10px;
+    min-width: 48px;
+    min-height: 44px;
+    padding: 6px 12px;
     background: var(--bg-surface);
     border: 1px solid var(--border-strong);
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 1px);
     font-weight: 700;
     border-radius: var(--radius-sm);
     cursor: pointer;
@@ -431,14 +479,14 @@
     margin-bottom: 12px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
   .cue-list li {
-    font-size: 13px;
+    font-size: var(--font-size-base);
     color: #d4d4d8;
-    line-height: 1.45;
+    line-height: 1.5;
     position: relative;
-    padding-left: 16px;
+    padding-left: 18px;
   }
   .cue-list li::before {
     content: "•";
@@ -446,18 +494,19 @@
     left: 4px;
     color: var(--accent-blue);
     font-weight: bold;
+    font-size: 16px;
   }
   .cue-list li strong { color: #fff; }
 
   .rule-callout {
     padding: 10px 12px;
     border-radius: var(--radius-sm);
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 1px);
     line-height: 1.45;
     margin-top: 8px;
   }
-  .rule-green { background: rgba(6, 78, 59, 0.4); border: 1px solid rgba(16, 185, 129, 0.3); color: #a7f3d0; }
-  .rule-red { background: rgba(136, 19, 55, 0.4); border: 1px solid rgba(244, 63, 94, 0.3); color: #fecdd3; }
+  .rule-green { background: rgba(6, 78, 59, 0.4); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; }
+  .rule-red { background: rgba(136, 19, 55, 0.4); border: 1px solid rgba(244, 63, 94, 0.4); color: #fecdd3; }
 
   /* ── PROGRESSION TABLE ── */
   .prog-table-wrapper {
@@ -469,7 +518,7 @@
   .prog-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: calc(var(--font-size-base) - 1px);
     text-align: left;
   }
   .prog-table th {
@@ -486,17 +535,17 @@
   }
   .prog-table tr:last-child td { border-bottom: none; }
   .prog-table tr.active-week {
-    background: rgba(59, 130, 246, 0.15);
+    background: rgba(59, 130, 246, 0.18);
     font-weight: 600;
   }
-  .prog-table tr.active-week td:first-child { color: #60a5fa; }
+  .prog-table tr.active-week td:first-child { color: var(--accent-blue); }
 
   /* ── MACROS SUMMARY CARDS ── */
   .macro-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    padding: 0 16px 12px;
+    padding: 0 14px 12px;
   }
   .macro-card {
     background: var(--bg-surface);
@@ -509,12 +558,12 @@
     align-items: center;
   }
   .macro-card .val {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
-  .macro-card .unit { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+  .macro-card .unit { font-size: 12px; font-weight: 400; color: var(--text-secondary); }
   .macro-card .lbl {
     font-size: 11px;
     font-weight: 600;
@@ -528,7 +577,7 @@
   .macro-card.carbs .val { color: #fb923c; }
   .macro-card.fat .val { color: #facc15; }
 
-  .macro-bar-container { padding: 0 16px 14px; }
+  .macro-bar-container { padding: 0 14px 14px; }
   .macro-bar {
     height: 8px;
     background: var(--bg-surface-raised);
@@ -549,7 +598,7 @@
 
   /* ── MEAL TIMELINE ── */
   .timeline-list {
-    padding: 0 16px;
+    padding: 0 14px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -585,7 +634,7 @@
     gap: 4px;
   }
   .meal-items li {
-    font-size: 13px;
+    font-size: var(--font-size-base);
     color: #d4d4d8;
     position: relative;
     padding-left: 14px;
@@ -599,7 +648,7 @@
   .meal-macros-row {
     display: flex;
     gap: 10px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--text-secondary);
     padding-top: 6px;
@@ -608,7 +657,7 @@
 
   /* ── MODE SWITCH TOGGLE (RAMADAN) ── */
   .mode-switch-card {
-    margin: 8px 16px 14px;
+    margin: 8px 14px 14px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
@@ -619,7 +668,7 @@
   }
   .mode-info { display: flex; flex-direction: column; }
   .mode-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: #fff;
     display: flex;
@@ -657,12 +706,12 @@
   input:checked + .slider { background-color: var(--accent-amber); border-color: var(--accent-amber); }
   input:checked + .slider:before { transform: translateX(20px); }
 
-  /* ── WEIGHT EDIT MODAL ── */
+  /* ── ACCESSIBILITY / SETTINGS MODAL ── */
   .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
     z-index: 100;
     display: flex;
     align-items: center;
@@ -675,23 +724,67 @@
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-lg);
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
-    animation: scaleIn 0.15s ease;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.9);
   }
-  @keyframes scaleIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .modal-title {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: #fff;
   }
+  .modal-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
+  .setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label {
+    display: flex;
+    flex-direction: column;
+  }
+  .setting-name { font-weight: 600; color: #fff; font-size: 14px; }
+  .setting-desc { font-size: 12px; color: var(--text-secondary); }
+
+  .size-steppers {
+    display: flex;
+    gap: 4px;
+  }
+  .size-btn {
+    padding: 6px 10px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .size-btn.active {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+  }
+
   .modal-input {
     width: 100%;
     padding: 12px 14px;
@@ -725,9 +818,9 @@
   }
   .modal-btn {
     flex: 1;
-    padding: 10px;
+    padding: 12px;
     border-radius: var(--radius-sm);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     border: 1px solid transparent;
@@ -750,7 +843,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8);
     z-index: 45;
     animation: slideUp 0.25s ease;
   }
@@ -767,15 +860,15 @@
     gap: 12px;
   }
   .timer-circle {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     background: var(--accent-blue-bg);
     border: 2px solid var(--accent-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 800;
     color: #fff;
     font-variant-numeric: tabular-nums;
@@ -784,8 +877,8 @@
     display: flex;
     flex-direction: column;
   }
-  .timer-title { font-size: 13px; font-weight: 700; color: #fff; }
-  .timer-sub { font-size: 11px; color: var(--text-secondary); }
+  .timer-title { font-size: 14px; font-weight: 700; color: #fff; }
+  .timer-sub { font-size: 12px; color: var(--text-secondary); }
 
   .timer-controls {
     display: flex;
@@ -793,8 +886,8 @@
     gap: 6px;
   }
   .timer-btn {
-    min-height: 38px;
-    padding: 6px 10px;
+    min-height: 40px;
+    padding: 6px 12px;
     border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
@@ -814,7 +907,7 @@
     width: 100%;
     max-width: 540px;
     height: 64px;
-    background: rgba(18, 18, 20, 0.95);
+    background: rgba(18, 18, 20, 0.96);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid var(--border-subtle);
@@ -838,15 +931,15 @@
     font-family: inherit;
     transition: color 0.15s ease;
   }
-  .nav-item .icon { font-size: 18px; line-height: 1; }
-  .nav-item[aria-selected="true"] { color: #60a5fa; }
+  .nav-item .icon { font-size: 19px; line-height: 1; }
+  .nav-item[aria-selected="true"] { color: var(--accent-blue); }
   .nav-item[aria-selected="true"] .icon { transform: scale(1.1); }
 
   .summary-grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    padding: 0 16px;
+    padding: 0 14px;
     margin-top: 14px;
   }
   .summary-tile {
@@ -856,14 +949,30 @@
     padding: 10px;
     text-align: center;
   }
-  .summary-tile .num { font-size: 18px; font-weight: 700; color: #fff; }
+  .summary-tile .num { font-size: 19px; font-weight: 700; color: #fff; }
   .summary-tile .sub { font-size: 11px; color: var(--text-secondary); }
+
+  /* ── LIVE SCREEN READER REGION ── */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 
 </style>
 </head>
 <body>
 
 <div class="app-container">
+
+  <!-- SCREEN READER ANNOUNCER LIVE REGION -->
+  <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
   <!-- TOP APP BAR -->
   <header class="top-bar">
@@ -872,11 +981,14 @@
       <span class="brand-subtitle" id="current-day-label">Sunday • Gym A</span>
     </div>
     <div class="top-actions">
+      <button type="button" class="action-btn" id="a11y-btn" onclick="openA11yModal()" title="Open Accessibility & Voice Settings" aria-label="Accessibility Settings">
+        ♿ a11y
+      </button>
       <button type="button" class="action-btn" id="wakelock-btn" onclick="toggleScreenWakeLock()" title="Keep screen awake during workout">
-        <span id="wakelock-icon">👁️</span> <span id="wakelock-text">Wake Lock</span>
+        <span id="wakelock-icon">👁️</span> <span id="wakelock-text">Awake</span>
       </button>
       <button type="button" class="action-btn" onclick="resetTodaySets()" title="Reset checked sets for today">
-        ↺ Reset
+        ↺
       </button>
     </div>
   </header>
@@ -1283,11 +1395,77 @@
 
 
   <!-- ══════════════════════════════════════════
+       ACCESSIBILITY & VOICE SETTINGS MODAL
+  ══════════════════════════════════════════ -->
+  <div id="a11y-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="a11y-modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="a11y-modal-title">♿ In-App Accessibility</div>
+        <button type="button" class="modal-close-btn" onclick="closeA11yModal()" aria-label="Close modal">✕</button>
+      </div>
+
+      <!-- Text Size Mode -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Text & Number Size</span>
+          <span class="setting-desc">Enlarge for gym readability</span>
+        </div>
+        <div class="size-steppers">
+          <button type="button" class="size-btn active" id="sbtn-base" onclick="setTextSize('base')">Standard</button>
+          <button type="button" class="size-btn" id="sbtn-lg" onclick="setTextSize('lg')">Large</button>
+          <button type="button" class="size-btn" id="sbtn-jumbo" onclick="setTextSize('jumbo')">Jumbo</button>
+        </div>
+      </div>
+
+      <!-- High Contrast Mode -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Ultra High Contrast (AAA)</span>
+          <span class="setting-desc">Pure black & high-vis neon accents</span>
+        </div>
+        <label class="switch" aria-label="Toggle High Contrast Mode">
+          <input type="checkbox" id="contrast-toggle" onchange="toggleHighContrast(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Voice Coach / Screen Reader Announcements -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">🔊 Voice Coach Announcements</span>
+          <span class="setting-desc">Speaks rest countdown & set alerts</span>
+        </div>
+        <label class="switch" aria-label="Toggle Voice Coach">
+          <input type="checkbox" id="voice-toggle" onchange="toggleVoiceCoach(this.checked)" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Reduced Motion -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Reduce Motion</span>
+          <span class="setting-desc">Disables transitions & animations</span>
+        </div>
+        <label class="switch" aria-label="Toggle Reduced Motion">
+          <input type="checkbox" id="motion-toggle" onchange="toggleReduceMotion(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="modal-btn save" onclick="closeA11yModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
        WEIGHT EDIT MODAL
   ══════════════════════════════════════════ -->
   <div id="weight-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-ex-title">
     <div class="modal-dialog">
-      <div class="modal-title" id="modal-ex-title">Edit Weight</div>
+      <div class="modal-title" id="modal-ex-title">Edit Target Weight</div>
       <input type="text" id="modal-weight-input" class="modal-input" placeholder="e.g. 14 kg or 2 × 12 kg">
       
       <div class="modal-quick-steppers">
@@ -1308,7 +1486,7 @@
   <!-- ══════════════════════════════════════════
        FLOATING REST TIMER COMPONENT
   ══════════════════════════════════════════ -->
-  <aside id="rest-timer-bar" class="timer-banner hidden" aria-live="polite" role="status">
+  <aside id="rest-timer-bar" class="timer-banner hidden" aria-live="assertive" role="status">
     <div class="timer-left">
       <div class="timer-circle" id="timer-display">01:30</div>
       <div class="timer-text-group">
@@ -1711,6 +1889,14 @@ let wakeLockSentinel = null;
 let editingExerciseId = null;
 let editingDay = null;
 
+// Accessibility Preferences
+let a11yConfig = {
+  textSize: localStorage.getItem('a11y_textSize') || 'base',
+  highContrast: localStorage.getItem('a11y_highContrast') === 'true',
+  voiceCoach: localStorage.getItem('a11y_voiceCoach') !== 'false', // default true
+  reduceMotion: localStorage.getItem('a11y_reduceMotion') === 'true'
+};
+
 /* ── DOM RENDERING ── */
 function getDisplayWeight(day, ex) {
   const custom = localStorage.getItem(`gym_weight_${ex.id}`);
@@ -1860,6 +2046,81 @@ function renderRoutineCard(r) {
   `;
 }
 
+/* ── VOICE COACH / SCREEN READER VOICE ENGINE ── */
+function speakAnnouncement(text) {
+  const announcer = document.getElementById('sr-announcer');
+  if (announcer) announcer.textContent = text;
+
+  if (a11yConfig.voiceCoach && 'speechSynthesis' in window) {
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.05;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.log('Speech synthesis error:', e);
+    }
+  }
+}
+
+/* ── ACCESSIBILITY SETTINGS MODAL ── */
+function openA11yModal() {
+  document.getElementById('a11y-modal').classList.remove('hidden');
+}
+
+function closeA11yModal() {
+  document.getElementById('a11y-modal').classList.add('hidden');
+}
+
+function setTextSize(size) {
+  a11yConfig.textSize = size;
+  localStorage.setItem('a11y_textSize', size);
+  applyA11yConfig();
+}
+
+function toggleHighContrast(enabled) {
+  a11yConfig.highContrast = enabled;
+  localStorage.setItem('a11y_highContrast', enabled);
+  applyA11yConfig();
+}
+
+function toggleVoiceCoach(enabled) {
+  a11yConfig.voiceCoach = enabled;
+  localStorage.setItem('a11y_voiceCoach', enabled);
+}
+
+function toggleReduceMotion(enabled) {
+  a11yConfig.reduceMotion = enabled;
+  localStorage.setItem('a11y_reduceMotion', enabled);
+  applyA11yConfig();
+}
+
+function applyA11yConfig() {
+  const html = document.documentElement;
+  // Text size classes
+  html.classList.remove('text-size-lg', 'text-size-xl', 'text-size-jumbo');
+  if (a11yConfig.textSize === 'lg') html.classList.add('text-size-lg');
+  if (a11yConfig.textSize === 'jumbo') html.classList.add('text-size-jumbo');
+
+  // Update size buttons
+  ['base', 'lg', 'jumbo'].forEach(s => {
+    const btn = document.getElementById(`sbtn-${s}`);
+    if (btn) btn.classList.toggle('active', a11yConfig.textSize === s);
+  });
+
+  // High contrast
+  html.classList.toggle('theme-high-contrast', a11yConfig.highContrast);
+  document.getElementById('contrast-toggle').checked = a11yConfig.highContrast;
+
+  // Voice coach
+  document.getElementById('voice-toggle').checked = a11yConfig.voiceCoach;
+
+  // Reduce motion
+  html.classList.toggle('reduce-motion', a11yConfig.reduceMotion);
+  document.getElementById('motion-toggle').checked = a11yConfig.reduceMotion;
+}
+
 /* ── WEIGHT MODAL HANDLERS ── */
 function openWeightModal(day, exId, exName, currentWeight) {
   editingDay = day;
@@ -1878,7 +2139,6 @@ function closeWeightModal() {
 function stepWeight(delta) {
   const input = document.getElementById('modal-weight-input');
   let val = input.value;
-  // Match single number like "12 kg" or "60 kg" or "2 × 12 kg"
   const multiMatch = val.match(/(\d+)\s*×\s*([\d.]+)\s*kg/i);
   const singleMatch = val.match(/^([\d.]+)\s*kg/i);
 
@@ -1892,7 +2152,6 @@ function stepWeight(delta) {
     if (num < 1) num = 1;
     input.value = `${num} kg`;
   } else {
-    // If text like Bodyweight or raw number
     let parsed = parseFloat(val);
     if (!isNaN(parsed)) {
       parsed += delta;
@@ -1908,17 +2167,20 @@ function saveCustomWeight() {
   if (newVal) {
     localStorage.setItem(`gym_weight_${editingExerciseId}`, newVal);
     renderWorkoutExercises(editingDay);
+    speakAnnouncement(`Weight target updated to ${newVal}`);
   }
   closeWeightModal();
 }
 
 /* ── INTERACTION HANDLERS ── */
 function toggleAccordion(id) {
+  const card = document.getElementById(`card-${id}`);
   const btn = document.getElementById(`btn-${id}`);
   const body = document.getElementById(`body-${id}`);
   const isExpanded = btn.getAttribute('aria-expanded') === 'true';
 
   btn.setAttribute('aria-expanded', !isExpanded);
+  card.classList.toggle('open', !isExpanded);
   body.style.display = isExpanded ? 'none' : 'block';
 }
 
@@ -1934,12 +2196,14 @@ function toggleSet(day, exId, setNum, restSeconds, exName) {
     savedSets[exId] = savedSets[exId].filter(s => s !== setNum);
     btn.classList.remove('completed');
     btn.textContent = setNum;
+    speakAnnouncement(`Set ${setNum} unchecked`);
   } else {
     savedSets[exId].push(setNum);
     btn.classList.add('completed');
     btn.textContent = '✓';
+    speakAnnouncement(`Set ${setNum} complete. Starting ${restSeconds} seconds rest.`);
     startRestTimer(restSeconds, exName);
-    requestScreenWakeLock(); // Automatically keep screen awake during workout
+    requestScreenWakeLock();
   }
 
   localStorage.setItem(storageKey, JSON.stringify(savedSets));
@@ -1949,6 +2213,7 @@ function resetTodaySets() {
   if (confirm(`Reset all checked sets for ${currentWorkoutDay.toUpperCase()}?`)) {
     localStorage.removeItem(`gym_sets_${currentWorkoutDay}`);
     renderWorkoutExercises(currentWorkoutDay);
+    speakAnnouncement(`All sets reset for ${currentWorkoutDay}`);
   }
 }
 
@@ -2023,7 +2288,7 @@ async function requestScreenWakeLock() {
         updateWakeLockUI(false);
       });
     } catch (err) {
-      console.log('Wake Lock request failed:', err.message);
+      console.log('Wake Lock failed:', err.message);
     }
   }
 }
@@ -2042,11 +2307,11 @@ function updateWakeLockUI(active) {
   const btn = document.getElementById('wakelock-btn');
   const text = document.getElementById('wakelock-text');
   if (active) {
-    btn.classList.add('active-wakelock');
+    btn.classList.add('active-state');
     text.textContent = 'Awake ✓';
   } else {
-    btn.classList.remove('active-wakelock');
-    text.textContent = 'Wake Lock';
+    btn.classList.remove('active-state');
+    text.textContent = 'Awake';
   }
 }
 
@@ -2069,8 +2334,11 @@ function startRestTimer(seconds, exName) {
     if (!isTimerPaused) {
       timerRemainingSeconds--;
       updateTimerDisplay();
+      if (timerRemainingSeconds === 30) {
+        speakAnnouncement('30 seconds of rest remaining');
+      }
       if (timerRemainingSeconds <= 0) {
-        timerFinished();
+        timerFinished(exName);
       }
     }
   }, 1000);
@@ -2086,11 +2354,13 @@ function updateTimerDisplay() {
 function toggleTimerPause() {
   isTimerPaused = !isTimerPaused;
   document.getElementById('timer-toggle-btn').textContent = isTimerPaused ? 'Resume' : 'Pause';
+  speakAnnouncement(isTimerPaused ? 'Rest timer paused' : 'Rest timer resumed');
 }
 
 function addTimerSeconds(extra) {
   timerRemainingSeconds += extra;
   updateTimerDisplay();
+  speakAnnouncement(`Added ${extra} seconds`);
 }
 
 function stopRestTimer() {
@@ -2099,9 +2369,10 @@ function stopRestTimer() {
   document.getElementById('rest-timer-bar').classList.add('hidden');
 }
 
-function timerFinished() {
+function timerFinished(exName) {
   stopRestTimer();
   playChime();
+  speakAnnouncement(`Rest complete. Time for your next set!`);
   if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
 }
 
@@ -2113,7 +2384,7 @@ function playChime() {
     osc.type = 'sine';
     osc.frequency.setValueAtTime(587.33, ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.setValueAtTime(0.35, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
     osc.connect(gain);
     gain.connect(ctx.destination);
@@ -2123,6 +2394,21 @@ function playChime() {
     console.log('AudioContext error:', e);
   }
 }
+
+/* ── KEYBOARD SHORTCUTS FOR ACCESSIBILITY ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeA11yModal();
+    closeWeightModal();
+  }
+  // Alt + 1-4 for main tabs
+  if (e.altKey) {
+    if (e.key === '1') switchMainTab('workout');
+    if (e.key === '2') switchMainTab('diet');
+    if (e.key === '3') switchMainTab('progression');
+    if (e.key === '4') switchMainTab('routines');
+  }
+});
 
 /* ── SERVICE WORKER REGISTRATION ── */
 if ('serviceWorker' in navigator) {
@@ -2135,6 +2421,8 @@ if ('serviceWorker' in navigator) {
 
 /* ── SMART DATE DETECTION ON LOAD ── */
 function initApp() {
+  applyA11yConfig();
+
   const dayIndex = new Date().getDay();
   if (dayIndex === 2) {
     switchWorkoutDay('tue');
