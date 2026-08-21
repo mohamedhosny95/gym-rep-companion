@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Gym Rep & Recomp Companion</title>
 <meta name="description" content="Accessible, mobile-first gym workout companion and recomp nutrition planner.">
+
+<!-- PWA & Mobile Web App Meta -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0c0c0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gym Companion">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+
 <style>
   :root {
     --bg-base: #0c0c0e;
@@ -21,19 +31,13 @@
     
     --accent-green: #10b981;
     --accent-green-bg: #064e3b;
-    --accent-green-dim: #052e24;
     --accent-blue: #3b82f6;
     --accent-blue-bg: #1e3a8a;
-    --accent-blue-dim: #172554;
     --accent-purple: #a855f7;
     --accent-purple-bg: #581c87;
-    --accent-purple-dim: #3b0764;
     --accent-amber: #f59e0b;
     --accent-amber-bg: #78350f;
-    --accent-amber-dim: #451a03;
-    --accent-teal: #14b8a6;
     --accent-rose: #f43f5e;
-    --accent-rose-bg: #881337;
 
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --radius-sm: 6px;
@@ -57,7 +61,7 @@
     font-family: var(--font-sans);
     font-size: 14px;
     line-height: 1.5;
-    padding-bottom: 96px; /* Space for bottom nav & timer */
+    padding-bottom: 96px;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -74,7 +78,6 @@
     position: relative;
   }
 
-  /* ── FOCUS ACCESSIBILITY ── */
   button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
     outline: none;
     box-shadow: var(--focus-ring);
@@ -85,11 +88,11 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(12, 12, 14, 0.92);
+    background: rgba(12, 12, 14, 0.94);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-subtle);
-    padding: 12px 16px;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -119,7 +122,7 @@
   .top-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .action-btn {
@@ -128,18 +131,23 @@
     color: var(--text-secondary);
     font-size: 12px;
     font-weight: 600;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    min-height: 40px;
+    gap: 5px;
+    min-height: 38px;
     transition: background 0.15s, color 0.15s;
   }
   .action-btn:hover {
     background: var(--bg-surface-hover);
     color: var(--text-primary);
+  }
+  .action-btn.active-wakelock {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #34d399;
   }
 
   /* ── SUB-NAV / SEGMENTED CONTROLS ── */
@@ -149,7 +157,7 @@
     border: 1px solid var(--border-subtle);
     padding: 4px;
     border-radius: var(--radius-md);
-    margin: 14px 16px 8px;
+    margin: 12px 16px 8px;
     gap: 4px;
   }
 
@@ -160,7 +168,7 @@
     color: var(--text-secondary);
     font-size: 12px;
     font-weight: 600;
-    padding: 10px 6px;
+    padding: 8px 4px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     min-height: 44px;
@@ -182,22 +190,10 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     border: 1px solid var(--border-strong);
   }
-  .seg-btn.accent-green[aria-selected="true"] {
-    color: #34d399;
-    border-color: var(--accent-green-bg);
-  }
-  .seg-btn.accent-blue[aria-selected="true"] {
-    color: #60a5fa;
-    border-color: var(--accent-blue-bg);
-  }
-  .seg-btn.accent-amber[aria-selected="true"] {
-    color: #fbbf24;
-    border-color: var(--accent-amber-bg);
-  }
-  .seg-btn.accent-purple[aria-selected="true"] {
-    color: #c084fc;
-    border-color: var(--accent-purple-bg);
-  }
+  .seg-btn.accent-green[aria-selected="true"] { color: #34d399; border-color: var(--accent-green-bg); }
+  .seg-btn.accent-blue[aria-selected="true"] { color: #60a5fa; border-color: var(--accent-blue-bg); }
+  .seg-btn.accent-amber[aria-selected="true"] { color: #fbbf24; border-color: var(--accent-amber-bg); }
+  .seg-btn.accent-purple[aria-selected="true"] { color: #c084fc; border-color: var(--accent-purple-bg); }
 
   /* ── TAB PANELS ── */
   .tab-panel {
@@ -214,10 +210,10 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── BANNER / CALLOUT ── */
+  /* ── BANNERS ── */
   .info-banner {
-    margin: 8px 16px 14px;
-    padding: 12px 14px;
+    margin: 8px 16px 12px;
+    padding: 10px 14px;
     border-radius: var(--radius-md);
     font-size: 13px;
     line-height: 1.45;
@@ -225,30 +221,13 @@
     align-items: flex-start;
     gap: 10px;
   }
-  .info-banner.blue {
-    background: rgba(30, 58, 138, 0.35);
-    border: 1px solid rgba(59, 130, 246, 0.4);
-    color: #bfdbfe;
-  }
-  .info-banner.green {
-    background: rgba(6, 78, 59, 0.35);
-    border: 1px solid rgba(16, 185, 129, 0.4);
-    color: #a7f3d0;
-  }
-  .info-banner.amber {
-    background: rgba(120, 53, 15, 0.35);
-    border: 1px solid rgba(245, 158, 11, 0.4);
-    color: #fde68a;
-  }
-  .info-banner.purple {
-    background: rgba(88, 28, 135, 0.35);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    color: #e9d5ff;
-  }
+  .info-banner.blue { background: rgba(30, 58, 138, 0.35); border: 1px solid rgba(59, 130, 246, 0.4); color: #bfdbfe; }
+  .info-banner.green { background: rgba(6, 78, 59, 0.35); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; }
+  .info-banner.amber { background: rgba(120, 53, 15, 0.35); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a; }
+  .info-banner.purple { background: rgba(88, 28, 135, 0.35); border: 1px solid rgba(168, 85, 247, 0.4); color: #e9d5ff; }
 
-  /* ── SECTION TITLES ── */
   .section-heading {
-    padding: 14px 16px 8px;
+    padding: 12px 16px 6px;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -272,7 +251,7 @@
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
     overflow: hidden;
-    transition: border-color 0.15s, background-color 0.15s;
+    transition: border-color 0.15s;
   }
   .ex-card:hover {
     border-color: var(--border-strong);
@@ -327,7 +306,6 @@
     border-radius: var(--radius-full);
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.02em;
     line-height: 1.2;
   }
   .badge-compound { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
@@ -346,17 +324,34 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    gap: 3px;
   }
 
-  .target-weight-val {
-    font-size: 14px;
+  /* ── EDITABLE WEIGHT BADGE ── */
+  .target-weight-btn {
+    font-size: 13px;
     font-weight: 700;
     color: #34d399;
-    background: rgba(6, 78, 59, 0.4);
-    padding: 2px 8px;
+    background: rgba(6, 78, 59, 0.45);
+    padding: 3px 8px;
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .target-weight-btn:hover {
+    background: rgba(6, 78, 59, 0.7);
+    transform: scale(1.02);
+  }
+  .target-weight-btn:active {
+    transform: scale(0.98);
+  }
+  .edit-pen-icon {
+    font-size: 10px;
+    opacity: 0.7;
   }
 
   .target-sets-val {
@@ -390,9 +385,6 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
 
   .set-chips {
@@ -415,7 +407,6 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
     transition: all 0.15s;
   }
   .set-btn:hover {
@@ -456,9 +447,7 @@
     color: var(--accent-blue);
     font-weight: bold;
   }
-  .cue-list li strong {
-    color: #fff;
-  }
+  .cue-list li strong { color: #fff; }
 
   .rule-callout {
     padding: 10px 12px;
@@ -467,21 +456,8 @@
     line-height: 1.45;
     margin-top: 8px;
   }
-  .rule-green {
-    background: rgba(6, 78, 59, 0.4);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #a7f3d0;
-  }
-  .rule-red {
-    background: rgba(136, 19, 55, 0.4);
-    border: 1px solid rgba(244, 63, 94, 0.3);
-    color: #fecdd3;
-  }
-  .rule-blue {
-    background: rgba(30, 58, 138, 0.4);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    color: #bfdbfe;
-  }
+  .rule-green { background: rgba(6, 78, 59, 0.4); border: 1px solid rgba(16, 185, 129, 0.3); color: #a7f3d0; }
+  .rule-red { background: rgba(136, 19, 55, 0.4); border: 1px solid rgba(244, 63, 94, 0.3); color: #fecdd3; }
 
   /* ── PROGRESSION TABLE ── */
   .prog-table-wrapper {
@@ -508,16 +484,12 @@
     color: var(--text-primary);
     border-bottom: 1px solid var(--border-subtle);
   }
-  .prog-table tr:last-child td {
-    border-bottom: none;
-  }
+  .prog-table tr:last-child td { border-bottom: none; }
   .prog-table tr.active-week {
     background: rgba(59, 130, 246, 0.15);
     font-weight: 600;
   }
-  .prog-table tr.active-week td:first-child {
-    color: #60a5fa;
-  }
+  .prog-table tr.active-week td:first-child { color: #60a5fa; }
 
   /* ── MACROS SUMMARY CARDS ── */
   .macro-grid {
@@ -542,11 +514,7 @@
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
-  .macro-card .unit {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--text-secondary);
-  }
+  .macro-card .unit { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
   .macro-card .lbl {
     font-size: 11px;
     font-weight: 600;
@@ -560,9 +528,7 @@
   .macro-card.carbs .val { color: #fb923c; }
   .macro-card.fat .val { color: #facc15; }
 
-  .macro-bar-container {
-    padding: 0 16px 14px;
-  }
+  .macro-bar-container { padding: 0 16px 14px; }
   .macro-bar {
     height: 8px;
     background: var(--bg-surface-raised);
@@ -610,16 +576,8 @@
     padding: 3px 8px;
     border-radius: var(--radius-sm);
   }
-  .meal-kcal-badge {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .meal-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-  }
+  .meal-kcal-badge { font-size: 13px; font-weight: 700; color: #fff; }
+  .meal-title { font-size: 15px; font-weight: 600; color: #fff; }
   .meal-items {
     list-style: none;
     display: flex;
@@ -659,10 +617,7 @@
     align-items: center;
     justify-content: space-between;
   }
-  .mode-info {
-    display: flex;
-    flex-direction: column;
-  }
+  .mode-info { display: flex; flex-direction: column; }
   .mode-title {
     font-size: 14px;
     font-weight: 600;
@@ -671,21 +626,14 @@
     align-items: center;
     gap: 6px;
   }
-  .mode-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
+  .mode-desc { font-size: 12px; color: var(--text-secondary); }
   .switch {
     position: relative;
     display: inline-block;
     width: 48px;
     height: 28px;
   }
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
+  .switch input { opacity: 0; width: 0; height: 0; }
   .slider {
     position: absolute;
     cursor: pointer;
@@ -706,16 +654,86 @@
     transition: .2s;
     border-radius: 50%;
   }
-  input:checked + .slider {
-    background-color: var(--accent-amber);
-    border-color: var(--accent-amber);
+  input:checked + .slider { background-color: var(--accent-amber); border-color: var(--accent-amber); }
+  input:checked + .slider:before { transform: translateX(20px); }
+
+  /* ── WEIGHT EDIT MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
   }
-  input:checked + .slider:before {
-    transform: translateX(20px);
+  .modal-overlay.hidden { display: none; }
+  .modal-dialog {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8);
+    animation: scaleIn 0.15s ease;
   }
-  input:focus-visible + .slider {
-    box-shadow: var(--focus-ring);
+  @keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .modal-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .modal-quick-steppers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .step-btn {
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 8px 0;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .step-btn:hover { background: var(--bg-surface-hover); }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .modal-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .modal-btn.save { background: var(--accent-green); color: #0c0c0e; }
+  .modal-btn.cancel { background: var(--bg-surface-raised); border-color: var(--border-subtle); color: var(--text-secondary); }
 
   /* ── REST TIMER FLOATING BAR ── */
   .timer-banner {
@@ -736,9 +754,7 @@
     z-index: 45;
     animation: slideUp 0.25s ease;
   }
-  .timer-banner.hidden {
-    display: none;
-  }
+  .timer-banner.hidden { display: none; }
 
   @keyframes slideUp {
     from { transform: translate(-50%, 20px); opacity: 0; }
@@ -768,15 +784,8 @@
     display: flex;
     flex-direction: column;
   }
-  .timer-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .timer-sub {
-    font-size: 11px;
-    color: var(--text-secondary);
-  }
+  .timer-title { font-size: 13px; font-weight: 700; color: #fff; }
+  .timer-sub { font-size: 11px; color: var(--text-secondary); }
 
   .timer-controls {
     display: flex;
@@ -794,11 +803,7 @@
     background: var(--bg-surface-raised);
     color: var(--text-primary);
   }
-  .timer-btn.primary {
-    background: var(--accent-blue);
-    color: #fff;
-    border-color: var(--accent-blue);
-  }
+  .timer-btn.primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
 
   /* ── BOTTOM NAVIGATION (THUMB FRIENDLY) ── */
   .bottom-nav {
@@ -833,18 +838,10 @@
     font-family: inherit;
     transition: color 0.15s ease;
   }
-  .nav-item .icon {
-    font-size: 18px;
-    line-height: 1;
-  }
-  .nav-item[aria-selected="true"] {
-    color: #60a5fa;
-  }
-  .nav-item[aria-selected="true"] .icon {
-    transform: scale(1.1);
-  }
+  .nav-item .icon { font-size: 18px; line-height: 1; }
+  .nav-item[aria-selected="true"] { color: #60a5fa; }
+  .nav-item[aria-selected="true"] .icon { transform: scale(1.1); }
 
-  /* ── UTILITY SUMMARY BAR ── */
   .summary-grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -859,15 +856,8 @@
     padding: 10px;
     text-align: center;
   }
-  .summary-tile .num {
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .summary-tile .sub {
-    font-size: 11px;
-    color: var(--text-secondary);
-  }
+  .summary-tile .num { font-size: 18px; font-weight: 700; color: #fff; }
+  .summary-tile .sub { font-size: 11px; color: var(--text-secondary); }
 
 </style>
 </head>
@@ -882,8 +872,11 @@
       <span class="brand-subtitle" id="current-day-label">Sunday • Gym A</span>
     </div>
     <div class="top-actions">
+      <button type="button" class="action-btn" id="wakelock-btn" onclick="toggleScreenWakeLock()" title="Keep screen awake during workout">
+        <span id="wakelock-icon">👁️</span> <span id="wakelock-text">Wake Lock</span>
+      </button>
       <button type="button" class="action-btn" onclick="resetTodaySets()" title="Reset checked sets for today">
-        ↺ Reset Sets
+        ↺ Reset
       </button>
     </div>
   </header>
@@ -917,7 +910,6 @@
         </div>
       </div>
 
-      <!-- Warmup -->
       <div class="section-heading">Warm-up (5 min)</div>
       <div class="cards-list">
         <div class="ex-card">
@@ -932,13 +924,9 @@
         </div>
       </div>
 
-      <!-- Main Lifts -->
-      <div class="section-heading">Main Workout — Tap for Cues & Rules</div>
-      <div class="cards-list" id="sun-exercises">
-        <!-- Exercises injected dynamically / structured with semantic accessible buttons -->
-      </div>
+      <div class="section-heading">Main Workout — Tap Weight to Edit</div>
+      <div class="cards-list" id="sun-exercises"></div>
 
-      <!-- Cool-down -->
       <div class="section-heading">Cool-down (3–5 min)</div>
       <div class="cards-list">
         <div class="ex-card">
@@ -982,10 +970,8 @@
         </div>
       </div>
 
-      <div class="section-heading">Main Workout — Tap for Cues & Rules</div>
-      <div class="cards-list" id="tue-exercises">
-        <!-- Tuesday exercises injected -->
-      </div>
+      <div class="section-heading">Main Workout — Tap Weight to Edit</div>
+      <div class="cards-list" id="tue-exercises"></div>
 
       <div class="section-heading">Cool-down (3–5 min)</div>
       <div class="cards-list">
@@ -1029,9 +1015,7 @@
       </div>
 
       <div class="section-heading">Main Workout</div>
-      <div class="cards-list" id="thu-exercises">
-        <!-- Thursday exercises injected -->
-      </div>
+      <div class="cards-list" id="thu-exercises"></div>
 
       <div class="summary-grid-3">
         <div class="summary-tile"><div class="num">6</div><div class="sub">Exercises</div></div>
@@ -1122,9 +1106,7 @@
 
     <!-- Meal Timeline List -->
     <div class="section-heading">Daily Meal Schedule</div>
-    <div class="timeline-list" id="diet-timeline">
-      <!-- Injected based on active plan -->
-    </div>
+    <div class="timeline-list" id="diet-timeline"></div>
 
   </main>
 
@@ -1142,7 +1124,6 @@
 
     <div class="section-heading">Gym A Progression Roadmaps</div>
     <div class="cards-list">
-      <!-- Goblet Squat -->
       <div class="ex-card">
         <div class="ex-body">
           <div class="ex-title" style="margin-bottom: 6px;">1. Goblet Squat (4 × 5)</div>
@@ -1162,7 +1143,6 @@
         </div>
       </div>
 
-      <!-- Romanian Deadlift -->
       <div class="ex-card">
         <div class="ex-body">
           <div class="ex-title" style="margin-bottom: 6px;">2. Romanian Deadlift (3 × 6)</div>
@@ -1182,7 +1162,6 @@
         </div>
       </div>
 
-      <!-- DB Bench Press -->
       <div class="ex-card">
         <div class="ex-body">
           <div class="ex-title" style="margin-bottom: 6px;">3. Dumbbell Bench Press (3 × 6)</div>
@@ -1201,7 +1180,6 @@
         </div>
       </div>
 
-      <!-- Seated Cable Row -->
       <div class="ex-card">
         <div class="ex-body">
           <div class="ex-title" style="margin-bottom: 6px;">4. Seated Cable Row (3 × 8)</div>
@@ -1223,7 +1201,6 @@
 
     <div class="section-heading">Gym B Progression Highlights</div>
     <div class="cards-list">
-      <!-- Leg Press -->
       <div class="ex-card">
         <div class="ex-body">
           <div class="ex-title" style="margin-bottom: 6px;">Leg Press (3 × 12)</div>
@@ -1273,9 +1250,7 @@
         </div>
       </div>
       <div class="section-heading">15-min Morning Flow</div>
-      <div class="cards-list" id="morning-exercises">
-        <!-- Morning activation exercises -->
-      </div>
+      <div class="cards-list" id="morning-exercises"></div>
     </section>
 
     <!-- Padel Routine -->
@@ -1286,13 +1261,9 @@
         </div>
       </div>
       <div class="section-heading">Warm-up (10 min before match)</div>
-      <div class="cards-list" id="padel-warmup">
-        <!-- Padel Warmup items -->
-      </div>
+      <div class="cards-list" id="padel-warmup"></div>
       <div class="section-heading">Cool-down (8 min post match)</div>
-      <div class="cards-list" id="padel-cooldown">
-        <!-- Padel Cooldown items -->
-      </div>
+      <div class="cards-list" id="padel-cooldown"></div>
     </section>
 
     <!-- Football Routine -->
@@ -1303,16 +1274,35 @@
         </div>
       </div>
       <div class="section-heading">Warm-up (10 min before kickoff)</div>
-      <div class="cards-list" id="football-warmup">
-        <!-- Football Warmup items -->
-      </div>
+      <div class="cards-list" id="football-warmup"></div>
       <div class="section-heading">Cool-down (8 min post match)</div>
-      <div class="cards-list" id="football-cooldown">
-        <!-- Football Cooldown items -->
-      </div>
+      <div class="cards-list" id="football-cooldown"></div>
     </section>
 
   </main>
+
+
+  <!-- ══════════════════════════════════════════
+       WEIGHT EDIT MODAL
+  ══════════════════════════════════════════ -->
+  <div id="weight-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-ex-title">
+    <div class="modal-dialog">
+      <div class="modal-title" id="modal-ex-title">Edit Weight</div>
+      <input type="text" id="modal-weight-input" class="modal-input" placeholder="e.g. 14 kg or 2 × 12 kg">
+      
+      <div class="modal-quick-steppers">
+        <button type="button" class="step-btn" onclick="stepWeight(-2.5)">-2.5 kg</button>
+        <button type="button" class="step-btn" onclick="stepWeight(-1)">-1 kg</button>
+        <button type="button" class="step-btn" onclick="stepWeight(+1)">+1 kg</button>
+        <button type="button" class="step-btn" onclick="stepWeight(+2.5)">+2.5 kg</button>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="modal-btn cancel" onclick="closeWeightModal()">Cancel</button>
+        <button type="button" class="modal-btn save" onclick="saveCustomWeight()">Save Target</button>
+      </div>
+    </div>
+  </div>
 
 
   <!-- ══════════════════════════════════════════
@@ -1610,8 +1600,6 @@ const WORKOUT_DATA = {
     }
   ]
 };
-
-// Thursday exercises match Sunday
 WORKOUT_DATA.thu = WORKOUT_DATA.sun;
 
 /* ── DIET PLANS DATA ── */
@@ -1719,8 +1707,16 @@ let isRamadan = false;
 let timerInterval = null;
 let timerRemainingSeconds = 0;
 let isTimerPaused = false;
+let wakeLockSentinel = null;
+let editingExerciseId = null;
+let editingDay = null;
 
 /* ── DOM RENDERING ── */
+function getDisplayWeight(day, ex) {
+  const custom = localStorage.getItem(`gym_weight_${ex.id}`);
+  return custom || ex.weight;
+}
+
 function renderWorkoutExercises(day) {
   const container = document.getElementById(`${day}-exercises`);
   if (!container) return;
@@ -1729,19 +1725,12 @@ function renderWorkoutExercises(day) {
   const savedSets = JSON.parse(localStorage.getItem(storageKey) || '{}');
 
   container.innerHTML = list.map(ex => {
-    const isCompletedAll = (savedSets[ex.id]?.length || 0) === ex.sets;
+    const displayWeight = getDisplayWeight(day, ex);
     return `
       <div class="ex-card" id="card-${ex.id}">
-        <button 
-          type="button" 
-          class="ex-header-btn" 
-          id="btn-${ex.id}"
-          aria-expanded="false" 
-          aria-controls="body-${ex.id}"
-          onclick="toggleAccordion('${ex.id}')"
-        >
-          <span class="ex-number">${ex.num}</span>
-          <div class="ex-info-block">
+        <div class="ex-header-btn" id="btn-${ex.id}" aria-expanded="false" aria-controls="body-${ex.id}">
+          <span class="ex-number" onclick="toggleAccordion('${ex.id}')">${ex.num}</span>
+          <div class="ex-info-block" onclick="toggleAccordion('${ex.id}')">
             <div class="ex-title-row">
               <span class="ex-title">${ex.name}</span>
               <span class="badge badge-${ex.tag}">${ex.tag}</span>
@@ -1749,13 +1738,14 @@ function renderWorkoutExercises(day) {
             <span class="ex-muscle-text">${ex.muscle}</span>
           </div>
           <div class="ex-quick-stat">
-            <span class="target-weight-val">${ex.weight}</span>
-            <span class="target-sets-val">${ex.sets} × ${ex.reps}</span>
+            <button type="button" class="target-weight-btn" onclick="openWeightModal('${day}', '${ex.id}', '${ex.name.replace(/'/g, "\\'")}', '${displayWeight}')" title="Tap to change weight target">
+              ${displayWeight} <span class="edit-pen-icon">✎</span>
+            </button>
+            <span class="target-sets-val" onclick="toggleAccordion('${ex.id}')">${ex.sets} × ${ex.reps}</span>
           </div>
-          <span class="chevron" aria-hidden="true">▾</span>
-        </button>
+          <span class="chevron" aria-hidden="true" onclick="toggleAccordion('${ex.id}')">▾</span>
+        </div>
 
-        <!-- Set Checkboxes Row -->
         <div class="set-tracker-row">
           <span class="set-tracker-label">
             <span>Sets (${ex.restSeconds}s rest):</span>
@@ -1779,7 +1769,6 @@ function renderWorkoutExercises(day) {
           </div>
         </div>
 
-        <!-- Collapsible Details -->
         <div id="body-${ex.id}" class="ex-body" style="display: none;" role="region" aria-labelledby="btn-${ex.id}">
           <ul class="cue-list">
             ${ex.cues.map(c => `<li>${c}</li>`).join('')}
@@ -1795,7 +1784,6 @@ function renderDietTimeline(planKey) {
   const plan = DIET_DATA[planKey];
   if (!plan) return;
 
-  // Update Macro summary
   document.getElementById('macro-kcal').textContent = plan.kcal;
   document.getElementById('macro-prot').innerHTML = `${plan.protein}<span class="unit">g</span>`;
   document.getElementById('macro-carb').innerHTML = `${plan.carbs}<span class="unit">g</span>`;
@@ -1806,7 +1794,6 @@ function renderDietTimeline(planKey) {
   document.getElementById('bar-c').style.width = `${plan.cPct}%`;
   document.getElementById('bar-f').style.width = `${plan.fPct}%`;
 
-  // Render meals
   const container = document.getElementById('diet-timeline');
   container.innerHTML = plan.meals.map(m => `
     <div class="timeline-card">
@@ -1828,7 +1815,6 @@ function renderDietTimeline(planKey) {
 }
 
 function renderRoutines() {
-  // Morning
   const mContainer = document.getElementById('morning-exercises');
   mContainer.innerHTML = ROUTINES_DATA.morning.map(r => `
     <div class="ex-card">
@@ -1848,11 +1834,8 @@ function renderRoutines() {
     </div>
   `).join('');
 
-  // Padel
   document.getElementById('padel-warmup').innerHTML = ROUTINES_DATA.padel.warmup.map(r => renderRoutineCard(r)).join('');
   document.getElementById('padel-cooldown').innerHTML = ROUTINES_DATA.padel.cooldown.map(r => renderRoutineCard(r)).join('');
-
-  // Football
   document.getElementById('football-warmup').innerHTML = ROUTINES_DATA.football.warmup.map(r => renderRoutineCard(r)).join('');
   document.getElementById('football-cooldown').innerHTML = ROUTINES_DATA.football.cooldown.map(r => renderRoutineCard(r)).join('');
 }
@@ -1875,6 +1858,58 @@ function renderRoutineCard(r) {
       </div>
     </div>
   `;
+}
+
+/* ── WEIGHT MODAL HANDLERS ── */
+function openWeightModal(day, exId, exName, currentWeight) {
+  editingDay = day;
+  editingExerciseId = exId;
+  document.getElementById('modal-ex-title').textContent = `Target: ${exName}`;
+  document.getElementById('modal-weight-input').value = currentWeight;
+  document.getElementById('weight-modal').classList.remove('hidden');
+  document.getElementById('modal-weight-input').focus();
+}
+
+function closeWeightModal() {
+  document.getElementById('weight-modal').classList.add('hidden');
+  editingExerciseId = null;
+}
+
+function stepWeight(delta) {
+  const input = document.getElementById('modal-weight-input');
+  let val = input.value;
+  // Match single number like "12 kg" or "60 kg" or "2 × 12 kg"
+  const multiMatch = val.match(/(\d+)\s*×\s*([\d.]+)\s*kg/i);
+  const singleMatch = val.match(/^([\d.]+)\s*kg/i);
+
+  if (multiMatch) {
+    const count = multiMatch[1];
+    let num = parseFloat(multiMatch[2]) + delta;
+    if (num < 1) num = 1;
+    input.value = `${count} × ${num} kg`;
+  } else if (singleMatch) {
+    let num = parseFloat(singleMatch[1]) + delta;
+    if (num < 1) num = 1;
+    input.value = `${num} kg`;
+  } else {
+    // If text like Bodyweight or raw number
+    let parsed = parseFloat(val);
+    if (!isNaN(parsed)) {
+      parsed += delta;
+      if (parsed < 1) parsed = 1;
+      input.value = `${parsed} kg`;
+    }
+  }
+}
+
+function saveCustomWeight() {
+  if (!editingExerciseId) return;
+  const newVal = document.getElementById('modal-weight-input').value.trim();
+  if (newVal) {
+    localStorage.setItem(`gym_weight_${editingExerciseId}`, newVal);
+    renderWorkoutExercises(editingDay);
+  }
+  closeWeightModal();
 }
 
 /* ── INTERACTION HANDLERS ── */
@@ -1903,8 +1938,8 @@ function toggleSet(day, exId, setNum, restSeconds, exName) {
     savedSets[exId].push(setNum);
     btn.classList.add('completed');
     btn.textContent = '✓';
-    // Trigger rest timer
     startRestTimer(restSeconds, exName);
+    requestScreenWakeLock(); // Automatically keep screen awake during workout
   }
 
   localStorage.setItem(storageKey, JSON.stringify(savedSets));
@@ -1978,6 +2013,43 @@ function switchRoutine(routineKey) {
   });
 }
 
+/* ── SCREEN WAKE LOCK API ── */
+async function requestScreenWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      wakeLockSentinel = await navigator.wakeLock.request('screen');
+      updateWakeLockUI(true);
+      wakeLockSentinel.addEventListener('release', () => {
+        updateWakeLockUI(false);
+      });
+    } catch (err) {
+      console.log('Wake Lock request failed:', err.message);
+    }
+  }
+}
+
+async function toggleScreenWakeLock() {
+  if (wakeLockSentinel) {
+    await wakeLockSentinel.release();
+    wakeLockSentinel = null;
+    updateWakeLockUI(false);
+  } else {
+    await requestScreenWakeLock();
+  }
+}
+
+function updateWakeLockUI(active) {
+  const btn = document.getElementById('wakelock-btn');
+  const text = document.getElementById('wakelock-text');
+  if (active) {
+    btn.classList.add('active-wakelock');
+    text.textContent = 'Awake ✓';
+  } else {
+    btn.classList.remove('active-wakelock');
+    text.textContent = 'Wake Lock';
+  }
+}
+
 /* ── REST TIMER ENGINE & SOUND ── */
 function startRestTimer(seconds, exName) {
   stopRestTimer();
@@ -2039,8 +2111,8 @@ function playChime() {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3); // A5
+    osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
     gain.gain.setValueAtTime(0.3, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
     osc.connect(gain);
@@ -2048,14 +2120,22 @@ function playChime() {
     osc.start();
     osc.stop(ctx.currentTime + 0.6);
   } catch (e) {
-    console.log('AudioContext not allowed without prior user interaction');
+    console.log('AudioContext error:', e);
   }
+}
+
+/* ── SERVICE WORKER REGISTRATION ── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.log('ServiceWorker registration skipped:', err.message);
+    });
+  });
 }
 
 /* ── SMART DATE DETECTION ON LOAD ── */
 function initApp() {
-  const dayIndex = new Date().getDay(); // 0 is Sun, 1 is Mon, 2 is Tue, 3 is Wed, 4 is Thu, 5 is Fri, 6 is Sat
-  
+  const dayIndex = new Date().getDay();
   if (dayIndex === 2) {
     switchWorkoutDay('tue');
   } else if (dayIndex === 4) {
