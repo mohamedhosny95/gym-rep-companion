@@ -58,11 +58,6 @@
     --font-size-title: 18px;
     --font-size-target: 16px;
   }
-  html.text-size-xl {
-    --font-size-base: 18px;
-    --font-size-title: 20px;
-    --font-size-target: 18px;
-  }
   html.text-size-jumbo {
     --font-size-base: 20px;
     --font-size-title: 22px;
@@ -133,7 +128,7 @@
     box-shadow: var(--focus-ring);
   }
 
-  /* ── TOP APP BAR ── */
+  /* ── RESTRUCTURED CLEAN TOP APP BAR ── */
   .top-bar {
     position: sticky;
     top: 0;
@@ -142,7 +137,7 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-subtle);
-    padding: 10px 14px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -150,7 +145,8 @@
 
   .brand-group {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 
   .brand-title {
@@ -163,41 +159,37 @@
     gap: 6px;
   }
 
-  .brand-subtitle {
-    font-size: calc(var(--font-size-base) - 2px);
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  .top-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .action-btn {
-    background: var(--bg-surface-raised);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    font-size: calc(var(--font-size-base) - 2px);
+  .active-day-pill {
+    font-size: 11px;
     font-weight: 600;
-    padding: 6px 10px;
-    border-radius: var(--radius-sm);
+    color: var(--accent-blue);
+    background: var(--accent-blue-bg);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+  }
+
+  .tools-btn {
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: var(--radius-full);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     min-height: 40px;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
   }
-  .action-btn:hover {
+  .tools-btn:hover {
     background: var(--bg-surface-hover);
-    color: var(--text-primary);
+    border-color: var(--accent-blue);
   }
-  .action-btn.active-state {
-    background: rgba(16, 185, 129, 0.25);
-    border-color: var(--accent-green);
-    color: var(--accent-green);
+  .tools-btn:active {
+    transform: scale(0.96);
   }
 
   /* ── SUB-NAV / SEGMENTED CONTROLS ── */
@@ -207,7 +199,7 @@
     border: 1px solid var(--border-subtle);
     padding: 4px;
     border-radius: var(--radius-md);
-    margin: 12px 14px 8px;
+    margin: 12px 16px 8px;
     gap: 4px;
   }
 
@@ -262,7 +254,7 @@
 
   /* ── BANNERS ── */
   .info-banner {
-    margin: 8px 14px 12px;
+    margin: 8px 16px 12px;
     padding: 12px 14px;
     border-radius: var(--radius-md);
     font-size: var(--font-size-base);
@@ -277,7 +269,7 @@
   .info-banner.purple { background: rgba(88, 28, 135, 0.35); border: 1px solid rgba(168, 85, 247, 0.5); color: #e9d5ff; }
 
   .section-heading {
-    padding: 12px 14px 6px;
+    padding: 12px 16px 6px;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -290,7 +282,7 @@
 
   /* ── EXERCISE ACCORDION CARD ── */
   .cards-list {
-    padding: 0 14px;
+    padding: 0 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -545,7 +537,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    padding: 0 14px 12px;
+    padding: 0 16px 12px;
   }
   .macro-card {
     background: var(--bg-surface);
@@ -577,7 +569,7 @@
   .macro-card.carbs .val { color: #fb923c; }
   .macro-card.fat .val { color: #facc15; }
 
-  .macro-bar-container { padding: 0 14px 14px; }
+  .macro-bar-container { padding: 0 16px 14px; }
   .macro-bar {
     height: 8px;
     background: var(--bg-surface-raised);
@@ -598,7 +590,7 @@
 
   /* ── MEAL TIMELINE ── */
   .timeline-list {
-    padding: 0 14px;
+    padding: 0 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -655,27 +647,85 @@
     border-top: 1px solid var(--border-subtle);
   }
 
-  /* ── MODE SWITCH TOGGLE (RAMADAN) ── */
-  .mode-switch-card {
-    margin: 8px 14px 14px;
+  /* ── UNIFIED CONTROL CENTER / TOOLS MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.hidden { display: none; }
+  .modal-dialog {
     background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.9);
+  }
+  .modal-header {
+    display: flex;
     justify-content: space-between;
-  }
-  .mode-info { display: flex; flex-direction: column; }
-  .mode-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    display: flex;
     align-items: center;
-    gap: 6px;
   }
-  .mode-desc { font-size: 12px; color: var(--text-secondary); }
+  .modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .modal-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
+  .setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label {
+    display: flex;
+    flex-direction: column;
+  }
+  .setting-name { font-weight: 600; color: #fff; font-size: 14px; }
+  .setting-desc { font-size: 12px; color: var(--text-secondary); }
+
+  .size-steppers {
+    display: flex;
+    gap: 4px;
+  }
+  .size-btn {
+    padding: 6px 12px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .size-btn.active {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+  }
+
   .switch {
     position: relative;
     display: inline-block;
@@ -703,88 +753,32 @@
     transition: .2s;
     border-radius: 50%;
   }
-  input:checked + .slider { background-color: var(--accent-amber); border-color: var(--accent-amber); }
+  input:checked + .slider { background-color: var(--accent-blue); border-color: var(--accent-blue); }
+  input:checked + .slider.amber { background-color: var(--accent-amber); border-color: var(--accent-amber); }
   input:checked + .slider:before { transform: translateX(20px); }
 
-  /* ── ACCESSIBILITY / SETTINGS MODAL ── */
-  .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(6px);
-    z-index: 100;
+  .danger-zone {
+    margin-top: 4px;
+    padding: 10px;
+    background: rgba(244, 63, 94, 0.1);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
-  .modal-overlay.hidden { display: none; }
-  .modal-dialog {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-lg);
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.9);
-  }
-  .modal-header {
-    display: flex;
     justify-content: space-between;
-    align-items: center;
   }
-  .modal-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .modal-close-btn {
-    background: none;
+  .danger-btn {
+    background: var(--accent-rose);
     border: none;
-    color: var(--text-secondary);
-    font-size: 20px;
-    cursor: pointer;
-    padding: 4px 8px;
-  }
-
-  .setting-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  .setting-row:last-child { border-bottom: none; }
-  .setting-label {
-    display: flex;
-    flex-direction: column;
-  }
-  .setting-name { font-weight: 600; color: #fff; font-size: 14px; }
-  .setting-desc { font-size: 12px; color: var(--text-secondary); }
-
-  .size-steppers {
-    display: flex;
-    gap: 4px;
-  }
-  .size-btn {
-    padding: 6px 10px;
-    background: var(--bg-surface-raised);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
+    color: #fff;
     font-weight: 700;
+    font-size: 12px;
+    padding: 8px 12px;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    font-size: 12px;
-  }
-  .size-btn.active {
-    background: var(--accent-blue);
-    color: #fff;
-    border-color: var(--accent-blue);
   }
 
+  /* ── WEIGHT MODAL ── */
   .modal-input {
     width: 100%;
     padding: 12px 14px;
@@ -898,7 +892,7 @@
   }
   .timer-btn.primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
 
-  /* ── BOTTOM NAVIGATION (THUMB FRIENDLY) ── */
+  /* ── BOTTOM NAVIGATION ── */
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -939,7 +933,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    padding: 0 14px;
+    padding: 0 16px;
     margin-top: 14px;
   }
   .summary-tile {
@@ -952,7 +946,6 @@
   .summary-tile .num { font-size: 19px; font-weight: 700; color: #fff; }
   .summary-tile .sub { font-size: 11px; color: var(--text-secondary); }
 
-  /* ── LIVE SCREEN READER REGION ── */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -971,24 +964,18 @@
 
 <div class="app-container">
 
-  <!-- SCREEN READER ANNOUNCER LIVE REGION -->
+  <!-- SCREEN READER LIVE REGION -->
   <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- TOP APP BAR -->
+  <!-- RESTRUCTURED CLEAN TOP APP BAR -->
   <header class="top-bar">
     <div class="brand-group">
-      <h1 class="brand-title">🏋️ Gym Rep Companion</h1>
-      <span class="brand-subtitle" id="current-day-label">Sunday • Gym A</span>
+      <h1 class="brand-title">🏋️ Gym Companion</h1>
+      <span class="active-day-pill" id="current-day-label">Sunday • Gym A</span>
     </div>
     <div class="top-actions">
-      <button type="button" class="action-btn" id="a11y-btn" onclick="openA11yModal()" title="Open Accessibility & Voice Settings" aria-label="Accessibility Settings">
-        ♿ a11y
-      </button>
-      <button type="button" class="action-btn" id="wakelock-btn" onclick="toggleScreenWakeLock()" title="Keep screen awake during workout">
-        <span id="wakelock-icon">👁️</span> <span id="wakelock-text">Awake</span>
-      </button>
-      <button type="button" class="action-btn" onclick="resetTodaySets()" title="Reset checked sets for today">
-        ↺
+      <button type="button" class="tools-btn" onclick="openToolsModal()" title="Open Quick Tools & Settings" aria-label="Open Tools and Settings">
+        ⚙️ <span>Tools</span>
       </button>
     </div>
   </header>
@@ -1144,18 +1131,6 @@
   ══════════════════════════════════════════ -->
   <main id="panel-diet" class="tab-panel" role="tabpanel" aria-labelledby="tab-diet">
     
-    <!-- Fasting / Ramadan Switch -->
-    <div class="mode-switch-card">
-      <div class="mode-info">
-        <span class="mode-title">🌙 Ramadan Fasting Mode</span>
-        <span class="mode-desc">Switches timeline to Iftar & Suhoor</span>
-      </div>
-      <label class="switch" aria-label="Toggle Ramadan Fasting Mode">
-        <input type="checkbox" id="ramadan-toggle" onchange="toggleRamadanMode(this.checked)">
-        <span class="slider"></span>
-      </label>
-    </div>
-
     <!-- Meal Plan Switcher -->
     <div class="segmented-control" id="standard-diet-tabs" role="tablist" aria-label="Diet Plan Switcher">
       <button type="button" class="seg-btn accent-green" role="tab" id="dtab-a" aria-selected="true" onclick="switchDietPlan('a')">
@@ -1395,20 +1370,32 @@
 
 
   <!-- ══════════════════════════════════════════
-       ACCESSIBILITY & VOICE SETTINGS MODAL
+       UNIFIED CONTROL CENTER / TOOLS MODAL
   ══════════════════════════════════════════ -->
-  <div id="a11y-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="a11y-modal-title">
+  <div id="tools-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tools-modal-title">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title" id="a11y-modal-title">♿ In-App Accessibility</div>
-        <button type="button" class="modal-close-btn" onclick="closeA11yModal()" aria-label="Close modal">✕</button>
+        <div class="modal-title" id="tools-modal-title">⚙️ Quick Tools & Settings</div>
+        <button type="button" class="modal-close-btn" onclick="closeToolsModal()" aria-label="Close modal">✕</button>
       </div>
 
-      <!-- Text Size Mode -->
+      <!-- Screen Wake Lock -->
       <div class="setting-row">
         <div class="setting-label">
-          <span class="setting-name">Text & Number Size</span>
-          <span class="setting-desc">Enlarge for gym readability</span>
+          <span class="setting-name">👁️ Keep Screen Awake</span>
+          <span class="setting-desc">Prevents phone sleep during workouts</span>
+        </div>
+        <label class="switch" aria-label="Toggle Screen Wake Lock">
+          <input type="checkbox" id="modal-wakelock-toggle" onchange="toggleScreenWakeLockModal(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Text Size Scaler -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">🔠 Text & Number Sizing</span>
+          <span class="setting-desc">Enlarge for gym floor distance</span>
         </div>
         <div class="size-steppers">
           <button type="button" class="size-btn active" id="sbtn-base" onclick="setTextSize('base')">Standard</button>
@@ -1417,10 +1404,10 @@
         </div>
       </div>
 
-      <!-- High Contrast Mode -->
+      <!-- Ultra High Contrast Mode -->
       <div class="setting-row">
         <div class="setting-label">
-          <span class="setting-name">Ultra High Contrast (AAA)</span>
+          <span class="setting-name">🌓 High Contrast (AAA)</span>
           <span class="setting-desc">Pure black & high-vis neon accents</span>
         </div>
         <label class="switch" aria-label="Toggle High Contrast Mode">
@@ -1429,11 +1416,23 @@
         </label>
       </div>
 
-      <!-- Voice Coach / Screen Reader Announcements -->
+      <!-- Ramadan Fasting Mode -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">🌙 Ramadan Fasting Mode</span>
+          <span class="setting-desc">Swaps diet to Iftar & Suhoor</span>
+        </div>
+        <label class="switch" aria-label="Toggle Ramadan Fasting Mode">
+          <input type="checkbox" id="ramadan-tools-toggle" onchange="toggleRamadanMode(this.checked)">
+          <span class="slider amber"></span>
+        </label>
+      </div>
+
+      <!-- Voice Coach -->
       <div class="setting-row">
         <div class="setting-label">
           <span class="setting-name">🔊 Voice Coach Announcements</span>
-          <span class="setting-desc">Speaks rest countdown & set alerts</span>
+          <span class="setting-desc">Speaks rest timer & set alerts</span>
         </div>
         <label class="switch" aria-label="Toggle Voice Coach">
           <input type="checkbox" id="voice-toggle" onchange="toggleVoiceCoach(this.checked)" checked>
@@ -1441,10 +1440,10 @@
         </label>
       </div>
 
-      <!-- Reduced Motion -->
+      <!-- Reduce Motion -->
       <div class="setting-row">
         <div class="setting-label">
-          <span class="setting-name">Reduce Motion</span>
+          <span class="setting-name">🚫 Reduce Motion</span>
           <span class="setting-desc">Disables transitions & animations</span>
         </div>
         <label class="switch" aria-label="Toggle Reduced Motion">
@@ -1453,8 +1452,17 @@
         </label>
       </div>
 
+      <!-- Reset Workout Session -->
+      <div class="danger-zone">
+        <div class="setting-label">
+          <span class="setting-name" style="color: #f87171;">↺ Reset Today's Sets</span>
+          <span class="setting-desc">Clear checkmarks for today</span>
+        </div>
+        <button type="button" class="danger-btn" onclick="resetTodaySets()">Reset Sets</button>
+      </div>
+
       <div class="modal-actions">
-        <button type="button" class="modal-btn save" onclick="closeA11yModal()">Done</button>
+        <button type="button" class="modal-btn save" onclick="closeToolsModal()">Done</button>
       </div>
     </div>
   </div>
@@ -1881,7 +1889,7 @@ const ROUTINES_DATA = {
 let currentMainTab = 'workout';
 let currentWorkoutDay = 'sun';
 let currentDietPlan = 'a';
-let isRamadan = false;
+let isRamadan = localStorage.getItem('diet_ramadan_mode') === 'true';
 let timerInterval = null;
 let timerRemainingSeconds = 0;
 let isTimerPaused = false;
@@ -1893,7 +1901,7 @@ let editingDay = null;
 let a11yConfig = {
   textSize: localStorage.getItem('a11y_textSize') || 'base',
   highContrast: localStorage.getItem('a11y_highContrast') === 'true',
-  voiceCoach: localStorage.getItem('a11y_voiceCoach') !== 'false', // default true
+  voiceCoach: localStorage.getItem('a11y_voiceCoach') !== 'false',
   reduceMotion: localStorage.getItem('a11y_reduceMotion') === 'true'
 };
 
@@ -2046,7 +2054,7 @@ function renderRoutineCard(r) {
   `;
 }
 
-/* ── VOICE COACH / SCREEN READER VOICE ENGINE ── */
+/* ── VOICE COACH ENGINE ── */
 function speakAnnouncement(text) {
   const announcer = document.getElementById('sr-announcer');
   if (announcer) announcer.textContent = text;
@@ -2064,13 +2072,25 @@ function speakAnnouncement(text) {
   }
 }
 
-/* ── ACCESSIBILITY SETTINGS MODAL ── */
-function openA11yModal() {
-  document.getElementById('a11y-modal').classList.remove('hidden');
+/* ── UNIFIED CONTROL CENTER MODAL ── */
+function openToolsModal() {
+  document.getElementById('tools-modal').classList.remove('hidden');
 }
 
-function closeA11yModal() {
-  document.getElementById('a11y-modal').classList.add('hidden');
+function closeToolsModal() {
+  document.getElementById('tools-modal').classList.add('hidden');
+}
+
+function toggleScreenWakeLockModal(enabled) {
+  if (enabled) {
+    requestScreenWakeLock();
+  } else {
+    if (wakeLockSentinel) {
+      wakeLockSentinel.release();
+      wakeLockSentinel = null;
+      updateWakeLockUI(false);
+    }
+  }
 }
 
 function setTextSize(size) {
@@ -2098,27 +2118,20 @@ function toggleReduceMotion(enabled) {
 
 function applyA11yConfig() {
   const html = document.documentElement;
-  // Text size classes
-  html.classList.remove('text-size-lg', 'text-size-xl', 'text-size-jumbo');
+  html.classList.remove('text-size-lg', 'text-size-jumbo');
   if (a11yConfig.textSize === 'lg') html.classList.add('text-size-lg');
   if (a11yConfig.textSize === 'jumbo') html.classList.add('text-size-jumbo');
 
-  // Update size buttons
   ['base', 'lg', 'jumbo'].forEach(s => {
     const btn = document.getElementById(`sbtn-${s}`);
     if (btn) btn.classList.toggle('active', a11yConfig.textSize === s);
   });
 
-  // High contrast
   html.classList.toggle('theme-high-contrast', a11yConfig.highContrast);
   document.getElementById('contrast-toggle').checked = a11yConfig.highContrast;
-
-  // Voice coach
   document.getElementById('voice-toggle').checked = a11yConfig.voiceCoach;
-
-  // Reduce motion
-  html.classList.toggle('reduce-motion', a11yConfig.reduceMotion);
   document.getElementById('motion-toggle').checked = a11yConfig.reduceMotion;
+  document.getElementById('ramadan-tools-toggle').checked = isRamadan;
 }
 
 /* ── WEIGHT MODAL HANDLERS ── */
@@ -2214,6 +2227,7 @@ function resetTodaySets() {
     localStorage.removeItem(`gym_sets_${currentWorkoutDay}`);
     renderWorkoutExercises(currentWorkoutDay);
     speakAnnouncement(`All sets reset for ${currentWorkoutDay}`);
+    closeToolsModal();
   }
 }
 
@@ -2256,6 +2270,9 @@ function switchDietPlan(planKey) {
 
 function toggleRamadanMode(enabled) {
   isRamadan = enabled;
+  localStorage.setItem('diet_ramadan_mode', enabled);
+  document.getElementById('ramadan-tools-toggle').checked = enabled;
+
   const standardTabs = document.getElementById('standard-diet-tabs');
   if (enabled) {
     standardTabs.style.opacity = '0.4';
@@ -2293,26 +2310,9 @@ async function requestScreenWakeLock() {
   }
 }
 
-async function toggleScreenWakeLock() {
-  if (wakeLockSentinel) {
-    await wakeLockSentinel.release();
-    wakeLockSentinel = null;
-    updateWakeLockUI(false);
-  } else {
-    await requestScreenWakeLock();
-  }
-}
-
 function updateWakeLockUI(active) {
-  const btn = document.getElementById('wakelock-btn');
-  const text = document.getElementById('wakelock-text');
-  if (active) {
-    btn.classList.add('active-state');
-    text.textContent = 'Awake ✓';
-  } else {
-    btn.classList.remove('active-state');
-    text.textContent = 'Awake';
-  }
+  const toggle = document.getElementById('modal-wakelock-toggle');
+  if (toggle) toggle.checked = active;
 }
 
 /* ── REST TIMER ENGINE & SOUND ── */
@@ -2398,10 +2398,9 @@ function playChime() {
 /* ── KEYBOARD SHORTCUTS FOR ACCESSIBILITY ── */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    closeA11yModal();
+    closeToolsModal();
     closeWeightModal();
   }
-  // Alt + 1-4 for main tabs
   if (e.altKey) {
     if (e.key === '1') switchMainTab('workout');
     if (e.key === '2') switchMainTab('diet');
@@ -2414,7 +2413,7 @@ document.addEventListener('keydown', e => {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(err => {
-      console.log('ServiceWorker registration skipped:', err.message);
+      console.log('ServiceWorker skipped:', err.message);
     });
   });
 }
@@ -2435,7 +2434,12 @@ function initApp() {
   renderWorkoutExercises('sun');
   renderWorkoutExercises('tue');
   renderWorkoutExercises('thu');
-  renderDietTimeline('a');
+  
+  if (isRamadan) {
+    toggleRamadanMode(true);
+  } else {
+    renderDietTimeline('a');
+  }
   renderRoutines();
 }
 
